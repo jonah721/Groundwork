@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --paper: #F2F3EF;
+    --paper-raised: #FFFFFF;
+    --ink: #14201B;
+    --ink-soft: #4B564F;
+    --ink-faint: #7C8580;
+    --moss: #3E6B4F;
+    --moss-dark: #2C4E39;
+    --moss-tint: #E1EAE2;
+    --ochre: #B8863B;
+    --ochre-tint: #F3E7D2;
+    --line: #D9D6C9;
+    --line-strong: #BFBBA9;
+    --danger: #A8432F;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-optical-sizing: auto;
+  }
+
+  .font-mono-data {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+}
+
+/* Custom Utilities for Groundwork Design System */
+.bg-paper { background-color: var(--paper); }
+.bg-paper-raised { background-color: var(--paper-raised); }
+.bg-moss { background-color: var(--moss); }
+.bg-moss-dark { background-color: var(--moss-dark); }
+.bg-moss-tint { background-color: var(--moss-tint); }
+.bg-ochre { background-color: var(--ochre); }
+.bg-ochre-tint { background-color: var(--ochre-tint); }
+
+.text-ink { color: var(--ink); }
+.text-ink-soft { color: var(--ink-soft); }
+.text-ink-faint { color: var(--ink-faint); }
+.text-moss { color: var(--moss); }
+.text-moss-dark { color: var(--moss-dark); }
+.text-ochre { color: var(--ochre); }
+.text-danger { color: var(--danger); }
+
+.border-line { border-color: var(--line); }
+.border-line-strong { border-color: var(--line-strong); }
+.border-moss { border-color: var(--moss); }
+.border-ochre { border-color: var(--ochre); }
+
+/* Typography Scale */
+.text-display-h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.text-display-h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  line-height: 1.15;
+}
+
+.text-display-h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 3px;
+}
