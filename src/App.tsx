@@ -14,6 +14,7 @@ import { ReviewPage } from './pages/ReviewPage';
 import { BusinessPage } from './pages/BusinessPage';
 import { ProblemHubPage } from './pages/ProblemHubPage';
 import { AboutPage } from './pages/AboutPage';
+import { Analytics } from '@vercel/analytics/react';
 
 export interface RouteState {
   type: 'home' | 'category' | 'review' | 'business' | 'hub' | 'about';
@@ -120,6 +121,9 @@ export default function App() {
 
       {/* Footer */}
       <Footer navigate={navigate} />
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
     </div>
   );
 }
