@@ -17,7 +17,8 @@ const {
   currentRoute = { type: 'home' }
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://groundwork-guides.vercel.app');
+const cleanPath = Astro.url.pathname.replace(/\/$/, '');
+const canonicalURL = new URL(cleanPath, Astro.site || 'https://groundwork-guides.vercel.app');
 ---
 
 <!doctype html>

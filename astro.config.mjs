@@ -6,6 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://groundwork-guides.vercel.app',
+  trailingSlash: 'never',
   integrations: [
     react(),
     sitemap()
