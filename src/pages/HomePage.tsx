@@ -8,6 +8,7 @@ import { QuizWidget } from '../components/QuizWidget';
 import { ScorecardBar } from '../components/ScorecardBar';
 import { Badge } from '../components/Badge';
 import { ArrowRight, ShieldCheck, CheckCircle, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { getHref } from '../utils/navigation';
 
 interface HomePageProps {
   navigate: (type: string, slug?: string) => void;
@@ -15,62 +16,66 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
   return (
-    <div className="space-y-16 pb-12">
+    <div className="space-y-16 pb-16">
       {/* Hero Section */}
-      <section className="pt-6 md:pt-10 max-w-[1120px] mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Hero Column */}
-          <div className="lg:col-span-7 space-y-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[var(--moss-tint)] border border-[#CBD8CC] rounded-full text-[0.8rem] font-mono-data text-[var(--moss-dark)] font-semibold">
-              <ShieldCheck className="w-4 h-4 text-[var(--moss)]" />
-              100% INDEPENDENT SOFTWARE EVALUATIONS
-            </div>
-
-            <h1 className="text-display-h1 text-[var(--ink)]">
-              Clear scorecards and unbiased software guides for growing businesses.
-            </h1>
-
-            <p className="text-[1.1rem] text-[var(--ink-soft)] leading-relaxed max-w-xl">
-              We cut through marketing bloat and affiliate noise. Groundwork tests business software against fixed binary criteria so you can pick tools that actually fit your operations.
-            </p>
-
-            {/* Embedded Interactive Quiz Tool */}
-            <div id="quiz-section" className="pt-2">
-              <QuizWidget
-                onSelectTool={(toolSlug) => navigate('review', toolSlug)}
-                onSelectCategory={(categorySlug) => navigate('category', categorySlug)}
-              />
-            </div>
-          </div>
-
-          {/* Right Hero Column: Business Problem Index Stack */}
-          <div id="home-problems" className="lg:col-span-5 space-y-4 bg-[var(--paper-raised)] p-6 rounded-[10px] border border-[var(--line-strong)] shadow-xs text-left">
-            <div className="flex items-center justify-between border-b border-[var(--line)] pb-3">
-              <div>
-                <span className="font-mono-data text-[0.72rem] font-bold uppercase text-[var(--moss-dark)] tracking-wider block text-left">
-                  THE NAVIGATOR SPINE
+      <section className="bg-[var(--paper)] py-12 md:py-16 border-b border-[var(--line)]">
+        <div className="max-w-[1120px] mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            {/* Left Hero Column */}
+            <div className="lg:col-span-7 space-y-6 text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[var(--moss-tint)] border border-[#CBD8CC] rounded-full">
+                <span className="w-2 h-2 rounded-full bg-[var(--moss)]"></span>
+                <span className="font-mono-data text-[0.78rem] font-semibold text-[var(--moss-dark)] uppercase tracking-wider">
+                  2026 Small Business Software Index
                 </span>
-                <h2 className="font-display font-semibold text-[1.2rem] text-[var(--ink)] text-left">
-                  Browse by Business Problem
-                </h2>
               </div>
-              <span className="font-mono-data text-[0.78rem] text-[var(--ink-faint)]">
-                {PROBLEM_HUBS.length} PROBLEMS
-              </span>
+
+              <h1 className="font-display font-semibold text-[2.5rem] md:text-[3.25rem] leading-[1.12] text-[var(--ink)] tracking-tight text-left">
+                Cut Through Software Hype with Clear Scorecards
+              </h1>
+
+              <p className="text-[1.12rem] text-[var(--ink-soft)] leading-relaxed max-w-xl text-left">
+                We independently evaluate business software against fixed binary criteria. No sponsored ranks, no hidden affiliate fluff—just objective software choices.
+              </p>
+
+              {/* Quiz Widget Card */}
+              <div className="pt-2">
+                <QuizWidget
+                  onSelectTool={(toolSlug) => navigate('review', toolSlug)}
+                  onSelectCategory={(categorySlug) => navigate('category', categorySlug)}
+                />
+              </div>
             </div>
 
-            <p className="text-[0.88rem] text-[var(--ink-soft)] text-left">
-              Identify the exact challenge slowing down your team and view curated software recommendations:
-            </p>
+            {/* Right Hero Column: Business Problem Index Stack */}
+            <div id="home-problems" className="lg:col-span-5 space-y-4 bg-[var(--paper-raised)] p-6 rounded-[10px] border border-[var(--line-strong)] shadow-xs text-left">
+              <div className="flex items-center justify-between border-b border-[var(--line)] pb-3">
+                <div>
+                  <span className="font-mono-data text-[0.72rem] font-bold uppercase text-[var(--moss-dark)] tracking-wider block text-left">
+                    THE NAVIGATOR SPINE
+                  </span>
+                  <h2 className="font-display font-semibold text-[1.2rem] text-[var(--ink)] text-left">
+                    Browse by Business Problem
+                  </h2>
+                </div>
+                <span className="font-mono-data text-[0.78rem] text-[var(--ink-faint)]">
+                  {PROBLEM_HUBS.length} PROBLEMS
+                </span>
+              </div>
 
-            <div className="space-y-2.5">
-              {PROBLEM_HUBS.map((hub) => (
-                <IndexCard
-                  key={hub.id}
-                  hub={hub}
-                  onClick={(slug) => navigate('hub', slug)}
-                />
-              ))}
+              <p className="text-[0.88rem] text-[var(--ink-soft)] text-left">
+                Identify the exact challenge slowing down your team and view curated software recommendations:
+              </p>
+
+              <div className="space-y-2.5">
+                {PROBLEM_HUBS.map((hub) => (
+                  <IndexCard
+                    key={hub.id}
+                    hub={hub}
+                    onClick={(slug) => navigate('hub', slug)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -95,10 +100,14 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {CATEGORIES.map((cat) => (
-              <div
+              <a
                 key={cat.id}
-                onClick={() => navigate('category', cat.slug)}
-                className="group p-6 bg-[var(--paper)] hover:bg-white border border-[var(--line)] hover:border-[var(--moss)] rounded-[10px] cursor-pointer transition-all duration-200 flex flex-col justify-between text-left"
+                href={getHref('category', cat.slug)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate('category', cat.slug);
+                }}
+                className="group p-6 bg-[var(--paper)] hover:bg-white border border-[var(--line)] hover:border-[var(--moss)] rounded-[10px] transition-all duration-200 flex flex-col justify-between text-left block"
               >
                 <div>
                   <div className="font-mono-data text-[0.72rem] font-semibold text-[var(--moss-dark)] uppercase tracking-wider mb-1 text-left">
@@ -121,7 +130,7 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -167,12 +176,16 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
             </p>
           </div>
           <div className="md:col-span-4 flex justify-start md:justify-end">
-            <button
-              onClick={() => navigate('about')}
-              className="font-mono-data text-[0.85rem] font-semibold bg-[var(--moss-dark)] hover:bg-[var(--moss)] text-white px-5 py-3 rounded-[8px] transition-colors"
+            <a
+              href={getHref('about')}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('about');
+              }}
+              className="font-mono-data text-[0.85rem] font-semibold bg-[var(--moss-dark)] hover:bg-[var(--moss)] text-white px-5 py-3 rounded-[8px] transition-colors inline-block"
             >
               Read Full Methodology
-            </button>
+            </a>
           </div>
         </div>
       </section>

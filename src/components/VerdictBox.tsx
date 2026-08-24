@@ -1,6 +1,7 @@
 import React from 'react';
 import { SoftwareTool } from '../types';
 import { ArrowRight, ArrowLeft, ExternalLink } from 'lucide-react';
+import { getHref } from '../utils/navigation';
 
 interface VerdictBoxProps {
   tool: SoftwareTool;
@@ -74,13 +75,17 @@ export const VerdictBox: React.FC<VerdictBoxProps> = ({
         </div>
 
         {onBackToTable && (
-          <button
-            onClick={onBackToTable}
+          <a
+            href={getHref('category', tool.categorySlug)}
+            onClick={(e) => {
+              e.preventDefault();
+              onBackToTable();
+            }}
             className="inline-flex items-center gap-1.5 text-white/70 hover:text-white font-mono-data text-[0.82rem] underline underline-offset-4 transition-colors sm:ml-auto"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to Comparison Table
-          </button>
+          </a>
         )}
       </div>
     </div>

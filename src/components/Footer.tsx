@@ -2,6 +2,7 @@ import React from 'react';
 import { CATEGORIES } from '../data/categories';
 import { PROBLEM_HUBS } from '../data/hubs';
 import { BUSINESS_TYPES } from '../data/businesses';
+import { getHref } from '../utils/navigation';
 
 interface FooterProps {
   navigate: (type: string, slug?: string) => void;
@@ -15,12 +16,18 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-[5px] bg-[var(--moss)] text-white font-serif-display font-bold flex items-center justify-center">
-                G
-              </div>
-              <span className="font-display font-semibold text-[1.25rem] text-white">
-                Groundwork
-              </span>
+              <a
+                href={getHref('home')}
+                onClick={(e) => { e.preventDefault(); navigate('home'); }}
+                className="flex items-center gap-2 text-white hover:opacity-90 transition-opacity"
+              >
+                <div className="w-7 h-7 rounded-[5px] bg-[var(--moss)] text-white font-serif-display font-bold flex items-center justify-center">
+                  G
+                </div>
+                <span className="font-display font-semibold text-[1.25rem] text-white">
+                  Groundwork
+                </span>
+              </a>
             </div>
             <p className="text-[0.88rem] text-white/70 max-w-sm leading-relaxed">
               Unbiased software evaluation, binary scorecards, and tailored tool recommendations for growing small businesses. We test software independently with zero paid rankings.
@@ -38,12 +45,13 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
             <ul className="space-y-1.5 text-[0.85rem] text-left">
               {CATEGORIES.map(cat => (
                 <li key={cat.id} className="text-left">
-                  <button
-                    onClick={() => navigate('category', cat.slug)}
-                    className="text-white/80 hover:text-white transition-colors text-left"
+                  <a
+                    href={getHref('category', cat.slug)}
+                    onClick={(e) => { e.preventDefault(); navigate('category', cat.slug); }}
+                    className="text-white/80 hover:text-white transition-colors text-left block"
                   >
                     {cat.name}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -57,12 +65,13 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
             <ul className="space-y-1.5 text-[0.82rem] text-left">
               {PROBLEM_HUBS.map(hub => (
                 <li key={hub.id} className="text-left">
-                  <button
-                    onClick={() => navigate('hub', hub.slug)}
-                    className="text-white/80 hover:text-white transition-colors text-left"
+                  <a
+                    href={getHref('hub', hub.slug)}
+                    onClick={(e) => { e.preventDefault(); navigate('hub', hub.slug); }}
+                    className="text-white/80 hover:text-white transition-colors text-left block"
                   >
                     {hub.num}. {hub.hubLabel}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -75,16 +84,19 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
             </div>
             <ul className="space-y-1.5 text-[0.85rem] text-left">
               <li className="text-left">
-                <button
-                  onClick={() => navigate('about')}
-                  className="text-white/80 hover:text-white transition-colors text-left"
+                <a
+                  href={getHref('about')}
+                  onClick={(e) => { e.preventDefault(); navigate('about'); }}
+                  className="text-white/80 hover:text-white transition-colors text-left block"
                 >
                   About & Methodology
-                </button>
+                </a>
               </li>
               <li className="text-left">
-                <button
-                  onClick={() => {
+                <a
+                  href="#/about#disclosure"
+                  onClick={(e) => {
+                    e.preventDefault();
                     navigate('about');
                     window.location.hash = '/about#disclosure';
                     setTimeout(() => {
@@ -92,22 +104,23 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
                       if (el) el.scrollIntoView({ behavior: 'smooth' });
                     }, 50);
                   }}
-                  className="text-white/80 hover:text-white transition-colors text-left"
+                  className="text-white/80 hover:text-white transition-colors text-left block"
                 >
                   Affiliate Disclosure
-                </button>
+                </a>
               </li>
               <li className="pt-2 text-[0.72rem] font-mono-data font-bold text-white/40 uppercase tracking-wider text-left">
                 BUSINESS TYPES
               </li>
               {BUSINESS_TYPES.map(biz => (
                 <li key={biz.id} className="text-left">
-                  <button
-                    onClick={() => navigate('business', biz.slug)}
-                    className="text-white/70 hover:text-white transition-colors text-left"
+                  <a
+                    href={getHref('business', biz.slug)}
+                    onClick={(e) => { e.preventDefault(); navigate('business', biz.slug); }}
+                    className="text-white/70 hover:text-white transition-colors text-left block"
                   >
                     {biz.name}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -118,15 +131,18 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between text-[0.78rem] text-white/60 gap-4 font-mono-data">
           <p>© 2026 Groundwork Editorial Guides. All rights reserved.</p>
           <div className="flex items-center gap-4 flex-wrap">
-            <button
-              onClick={() => navigate('about')}
+            <a
+              href={getHref('about')}
+              onClick={(e) => { e.preventDefault(); navigate('about'); }}
               className="text-white/70 hover:text-white transition-colors underline decoration-white/30"
             >
               About & Methodology
-            </button>
+            </a>
             <span>•</span>
-            <button
-              onClick={() => {
+            <a
+              href="#/about#disclosure"
+              onClick={(e) => {
+                e.preventDefault();
                 navigate('about');
                 window.location.hash = '/about#disclosure';
                 setTimeout(() => {
@@ -137,7 +153,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
               className="text-white/70 hover:text-white transition-colors underline decoration-white/30"
             >
               Affiliate Disclosure
-            </button>
+            </a>
             <span>•</span>
             <span className="text-white/40">Zero paid placements</span>
           </div>

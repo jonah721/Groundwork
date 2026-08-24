@@ -7,6 +7,7 @@ import { ScorecardBar } from '../components/ScorecardBar';
 import { Badge } from '../components/Badge';
 import { ProsConsBlock } from '../components/ProsConsBlock';
 import { ArrowRight, Lightbulb, ExternalLink } from 'lucide-react';
+import { getHref } from '../utils/navigation';
 
 interface CategoryPageProps {
   category: Category;
@@ -70,13 +71,17 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool, navigate }) => {
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           )}
-          <button
-            onClick={() => navigate('review', tool.slug)}
+          <a
+            href={getHref('review', tool.slug)}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('review', tool.slug);
+            }}
             className="inline-flex items-center gap-2 bg-[var(--moss)] hover:bg-[var(--moss-dark)] text-white font-mono-data text-[0.85rem] font-semibold px-5 py-2.5 rounded-[8px] transition-colors"
           >
             Read Full Evaluation
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -115,12 +120,16 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category, navigate }
               <strong className="text-[var(--ink)]">{sr.boldPrefix}</strong>
               {sr.text}
               {sr.targetCategorySlug ? (
-                <button
-                  onClick={() => navigate('category', sr.targetCategorySlug)}
-                  className="font-bold text-[var(--moss-dark)] hover:underline cursor-pointer"
+                <a
+                  href={getHref('category', sr.targetCategorySlug)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('category', sr.targetCategorySlug);
+                  }}
+                  className="font-bold text-[var(--moss-dark)] hover:underline cursor-pointer inline-block"
                 >
                   {sr.linkText}
-                </button>
+                </a>
               ) : (
                 <strong className="text-[var(--ink)]">{sr.linkText}</strong>
               )}
@@ -187,12 +196,16 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category, navigate }
                     {sub.oneThingCallout.body}
                   </p>
                   <div className="pt-2">
-                    <button
-                      onClick={() => navigate('review', sub.oneThingCallout!.toolSlug)}
+                    <a
+                      href={getHref('review', sub.oneThingCallout.toolSlug)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate('review', sub.oneThingCallout!.toolSlug);
+                      }}
                       className="inline-flex items-center gap-1.5 font-mono-data text-[0.82rem] font-bold text-[var(--moss-dark)] hover:text-[var(--moss)] underline"
                     >
                       Read Top Recommendation Review →
-                    </button>
+                    </a>
                   </div>
                 </div>
               )}
@@ -249,12 +262,16 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category, navigate }
                 {category.oneThingCallout.body}
               </p>
               <div className="pt-2">
-                <button
-                  onClick={() => navigate('review', category.oneThingCallout!.toolSlug)}
+                <a
+                  href={getHref('review', category.oneThingCallout.toolSlug)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('review', category.oneThingCallout!.toolSlug);
+                  }}
                   className="inline-flex items-center gap-1.5 font-mono-data text-[0.82rem] font-bold text-[var(--moss-dark)] hover:text-[var(--moss)] underline"
                 >
                   Read Top Recommendation Review →
-                </button>
+                </a>
               </div>
             </div>
           )}

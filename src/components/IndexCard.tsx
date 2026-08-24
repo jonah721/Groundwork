@@ -1,6 +1,7 @@
 import React from 'react';
 import { ProblemHub } from '../types';
 import { ArrowUpRight } from 'lucide-react';
+import { getHref } from '../utils/navigation';
 
 interface IndexCardProps {
   hub: ProblemHub;
@@ -10,9 +11,13 @@ interface IndexCardProps {
 
 export const IndexCard: React.FC<IndexCardProps> = ({ hub, onClick, className = '' }) => {
   return (
-    <div
-      onClick={() => onClick(hub.slug)}
-      className={`group flex items-center justify-between p-4 bg-[var(--paper-raised)] hover:bg-[var(--moss-tint)]/60 border border-[var(--line)] hover:border-[var(--moss)] rounded-[10px] cursor-pointer transition-all duration-200 ${className}`}
+    <a
+      href={getHref('hub', hub.slug)}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(hub.slug);
+      }}
+      className={`group flex items-center justify-between p-4 bg-[var(--paper-raised)] hover:bg-[var(--moss-tint)]/60 border border-[var(--line)] hover:border-[var(--moss)] rounded-[10px] transition-all duration-200 block ${className}`}
     >
       <div className="flex items-center gap-3.5">
         <span className="font-mono-data text-[0.82rem] font-semibold text-[var(--ink-faint)] group-hover:text-[var(--moss-dark)] transition-colors">
@@ -26,6 +31,6 @@ export const IndexCard: React.FC<IndexCardProps> = ({ hub, onClick, className = 
       <div className="w-7 h-7 rounded-full bg-[var(--paper)] group-hover:bg-[var(--moss)] flex items-center justify-center text-[var(--ink-soft)] group-hover:text-white transition-all">
         <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
       </div>
-    </div>
+    </a>
   );
 };

@@ -5,7 +5,8 @@ import { CATEGORIES } from '../data/categories';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { ScorecardBar } from '../components/ScorecardBar';
 import { Badge } from '../components/Badge';
-import { ArrowRight, CheckCircle2, Compass, AlertTriangle } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { getHref } from '../utils/navigation';
 
 interface ProblemHubPageProps {
   hub: ProblemHub;
@@ -75,12 +76,16 @@ export const ProblemHubPage: React.FC<ProblemHubPageProps> = ({ hub, navigate })
                   </p>
                 </div>
 
-                <button
-                  onClick={() => navigate('category', branch.categorySlug)}
+                <a
+                  href={getHref('category', branch.categorySlug)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('category', branch.categorySlug);
+                  }}
                   className="inline-flex items-center gap-1.5 font-mono-data text-[0.82rem] font-bold text-[var(--moss-dark)] hover:text-[var(--moss)] underline pt-1"
                 >
                   View Category →
-                </button>
+                </a>
               </div>
             ))}
           </div>
@@ -100,13 +105,17 @@ export const ProblemHubPage: React.FC<ProblemHubPageProps> = ({ hub, navigate })
             </p>
           </div>
 
-          <button
-            onClick={() => navigate('category', category.slug)}
+          <a
+            href={getHref('category', category.slug)}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('category', category.slug);
+            }}
             className="shrink-0 bg-[var(--moss-dark)] hover:bg-[var(--moss)] text-white font-mono-data text-[0.85rem] font-semibold px-5 py-3 rounded-[8px] transition-colors flex items-center gap-2"
           >
             View Category Guide
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </a>
         </div>
       )}
 
@@ -161,13 +170,17 @@ export const ProblemHubPage: React.FC<ProblemHubPageProps> = ({ hub, navigate })
 
               <div className="pt-3 border-t border-[var(--line)] flex items-center justify-between">
                 <ScorecardBar scorecard={tool.scorecard} />
-                <button
-                  onClick={() => navigate('review', tool.slug)}
+                <a
+                  href={getHref('review', tool.slug)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('review', tool.slug);
+                  }}
                   className="inline-flex items-center gap-1.5 font-mono-data text-[0.82rem] font-semibold text-[var(--moss-dark)] hover:text-[var(--moss)] underline"
                 >
                   Read Review
                   <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                </a>
               </div>
             </div>
           ))}

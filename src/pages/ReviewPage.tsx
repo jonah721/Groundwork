@@ -8,6 +8,7 @@ import { Badge } from '../components/Badge';
 import { ProsConsBlock } from '../components/ProsConsBlock';
 import { VerdictBox } from '../components/VerdictBox';
 import { CheckCircle2, Clock, DollarSign, Zap, ArrowRight, ShieldCheck, HelpCircle, ExternalLink } from 'lucide-react';
+import { getHref } from '../utils/navigation';
 
 interface ReviewPageProps {
   tool: SoftwareTool;
@@ -213,12 +214,16 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({ tool, navigate }) => {
           <div className="p-4 bg-[var(--paper)] rounded-[8px] border-l-4 border-[var(--moss)] text-[0.92rem] text-[var(--ink)] space-y-1 my-3">
             <p className="font-semibold text-[var(--ink)]">Also see:</p>
             <p className="text-[var(--ink-soft)]">{tool.crossLink.text}</p>
-            <button
-              onClick={() => navigate('review', tool.crossLink!.targetSlug)}
-              className="inline-flex items-center gap-1 font-mono-data text-[0.85rem] font-bold text-[var(--moss-dark)] hover:underline pt-1 cursor-pointer"
+            <a
+              href={getHref('review', tool.crossLink.targetSlug)}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('review', tool.crossLink!.targetSlug);
+              }}
+              className="inline-flex items-center gap-1 font-mono-data text-[0.85rem] font-bold text-[var(--moss-dark)] hover:underline pt-1 cursor-pointer inline-block"
             >
               {tool.crossLink.linkText}
-            </button>
+            </a>
           </div>
         )}
 

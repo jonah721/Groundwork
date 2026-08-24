@@ -1,6 +1,7 @@
 import React from 'react';
 import { BusinessType } from '../types';
 import { ArrowRight } from 'lucide-react';
+import { getHref } from '../utils/navigation';
 
 interface BusinessTileProps {
   business: BusinessType;
@@ -14,9 +15,13 @@ export const BusinessTile: React.FC<BusinessTileProps> = ({
   className = ''
 }) => {
   return (
-    <div
-      onClick={() => onClick(business.slug)}
-      className={`group p-5 bg-[var(--paper-raised)] hover:bg-white border border-[var(--line)] hover:border-[var(--moss)] rounded-[10px] cursor-pointer transition-all duration-200 flex flex-col justify-between ${className}`}
+    <a
+      href={getHref('business', business.slug)}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(business.slug);
+      }}
+      className={`group p-5 bg-[var(--paper-raised)] hover:bg-white border border-[var(--line)] hover:border-[var(--moss)] rounded-[10px] transition-all duration-200 flex flex-col justify-between block ${className}`}
     >
       <div>
         <h3 className="font-display font-semibold text-[1.15rem] text-[var(--ink)] group-hover:text-[var(--moss-dark)] mb-2 transition-colors">
@@ -31,6 +36,6 @@ export const BusinessTile: React.FC<BusinessTileProps> = ({
         <span>View Tool Recommendations</span>
         <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
       </div>
-    </div>
+    </a>
   );
 };

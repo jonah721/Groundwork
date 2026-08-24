@@ -3,6 +3,7 @@ import { SoftwareTool } from '../types';
 import { ScorecardBar } from './ScorecardBar';
 import { Badge } from './Badge';
 import { ArrowRight } from 'lucide-react';
+import { getHref } from '../utils/navigation';
 
 interface ComparisonTableProps {
   tools: SoftwareTool[];
@@ -39,12 +40,18 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({
                 <td className="py-4 px-4 align-top">
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <button
-                        onClick={() => onSelectTool && onSelectTool(tool.slug)}
+                      <a
+                        href={getHref('review', tool.slug)}
+                        onClick={(e) => {
+                          if (onSelectTool) {
+                            e.preventDefault();
+                            onSelectTool(tool.slug);
+                          }
+                        }}
                         className="font-display font-semibold text-[1.1rem] text-[var(--ink)] hover:text-[var(--moss-dark)] text-left underline decoration-dotted underline-offset-4 decoration-[var(--line-strong)] hover:decoration-[var(--moss-dark)]"
                       >
                         {tool.name}
-                      </button>
+                      </a>
                       {tool.badge && <Badge badge={tool.badge} />}
                     </div>
                     <ScorecardBar scorecard={tool.scorecard} />
@@ -75,13 +82,19 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({
 
                 {/* Our Verdict & Link */}
                 <td className="py-4 px-4 align-top text-right">
-                  <button
-                    onClick={() => onSelectTool && onSelectTool(tool.slug)}
+                  <a
+                    href={getHref('review', tool.slug)}
+                    onClick={(e) => {
+                      if (onSelectTool) {
+                        e.preventDefault();
+                        onSelectTool(tool.slug);
+                      }
+                    }}
                     className="inline-flex items-center gap-1.5 font-mono-data text-[0.8rem] font-semibold text-[var(--moss-dark)] hover:text-[var(--moss)] bg-white/80 hover:bg-white border border-[var(--line-strong)] hover:border-[var(--moss)] px-3 py-1.5 rounded-[6px] transition-all"
                   >
                     Read Review
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  </a>
                 </td>
               </tr>
             );

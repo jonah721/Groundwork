@@ -3,6 +3,7 @@ import { CATEGORIES } from '../data/categories';
 import { PROBLEM_HUBS } from '../data/hubs';
 import { BUSINESS_TYPES } from '../data/businesses';
 import { TOOLS } from '../data/tools';
+import { getHref } from '../utils/navigation';
 import { 
   ChevronDown, 
   ChevronRight, 
@@ -139,8 +140,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) 
       <div className="max-w-[1120px] mx-auto px-4 md:px-6 h-[64px] flex items-center justify-between gap-4">
         
         {/* Brand Logo */}
-        <button
-          onClick={() => {
+        <a
+          href={getHref('home')}
+          onClick={(e) => {
+            e.preventDefault();
             navigate('home');
             closeAll();
           }}
@@ -157,7 +160,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) 
               SOFTWARE GUIDES
             </span>
           </div>
-        </button>
+        </a>
 
         {/* Desktop & Tablet Top Bar Items (Software Categories, Business Problems, Business Types) */}
         <nav className="hidden md:flex items-center gap-6 text-[0.88rem]">
@@ -180,17 +183,19 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) 
                 onMouseLeave={() => setActiveTopDropdown(null)}
               >
                 {CATEGORIES.map(cat => (
-                  <button
+                  <a
                     key={cat.id}
-                    onClick={() => {
+                    href={getHref('category', cat.slug)}
+                    onClick={(e) => {
+                      e.preventDefault();
                       navigate('category', cat.slug);
                       closeAll();
                     }}
-                    className="w-full text-left px-3.5 py-1.5 text-[0.85rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] font-medium transition-colors flex items-center justify-between"
+                    className="w-full text-left px-3.5 py-1.5 text-[0.85rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] font-medium transition-colors flex items-center justify-between block"
                   >
                     <span>{cat.name}</span>
                     <span className="font-mono-data text-[0.68rem] text-[var(--ink-faint)]">{cat.tools.length}</span>
-                  </button>
+                  </a>
                 ))}
               </div>
             )}
@@ -214,17 +219,19 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) 
                 onMouseLeave={() => setActiveTopDropdown(null)}
               >
                 {PROBLEM_HUBS.map(hub => (
-                  <button
+                  <a
                     key={hub.id}
-                    onClick={() => {
+                    href={getHref('hub', hub.slug)}
+                    onClick={(e) => {
+                      e.preventDefault();
                       navigate('hub', hub.slug);
                       closeAll();
                     }}
-                    className="w-full text-left px-3.5 py-1.5 text-[0.84rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] transition-colors flex items-center gap-2.5"
+                    className="w-full text-left px-3.5 py-1.5 text-[0.84rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] transition-colors flex items-center gap-2.5 block"
                   >
                     <span className="font-mono-data text-[0.7rem] text-[var(--ink-faint)]">#{hub.num}</span>
                     <span className="truncate">{hub.hubLabel}</span>
-                  </button>
+                  </a>
                 ))}
               </div>
             )}
@@ -248,16 +255,18 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) 
                 onMouseLeave={() => setActiveTopDropdown(null)}
               >
                 {BUSINESS_TYPES.map(biz => (
-                  <button
+                  <a
                     key={biz.id}
-                    onClick={() => {
+                    href={getHref('business', biz.slug)}
+                    onClick={(e) => {
+                      e.preventDefault();
                       navigate('business', biz.slug);
                       closeAll();
                     }}
-                    className="w-full text-left px-3.5 py-1.5 text-[0.85rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] font-medium transition-colors"
+                    className="w-full text-left px-3.5 py-1.5 text-[0.85rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] font-medium transition-colors block"
                   >
                     {biz.name}
-                  </button>
+                  </a>
                 ))}
               </div>
             )}
@@ -468,17 +477,19 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) 
                     {drawerAccordions.tools && (
                       <div className="p-1.5 space-y-0.5 border-t border-[var(--line)] max-h-56 overflow-y-auto">
                         {TOOLS.map(t => (
-                          <button
+                          <a
                             key={t.id}
-                            onClick={() => {
+                            href={getHref('review', t.slug)}
+                            onClick={(e) => {
+                              e.preventDefault();
                               navigate('review', t.slug);
                               closeAll();
                             }}
-                            className="w-full text-left px-2.5 py-1 rounded-[5px] text-[0.78rem] text-[var(--ink-soft)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] flex items-center justify-between"
+                            className="w-full text-left px-2.5 py-1 rounded-[5px] text-[0.78rem] text-[var(--ink-soft)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] flex items-center justify-between block"
                           >
                             <span className="truncate">{t.name}</span>
                             <span className="font-mono-data text-[0.65rem] text-[var(--ink-faint)] truncate max-w-[80px]">{t.categoryName}</span>
-                          </button>
+                          </a>
                         ))}
                       </div>
                     )}
@@ -500,17 +511,19 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) 
                     {drawerAccordions.categories && (
                       <div className="p-1.5 space-y-0.5 border-t border-[var(--line)]">
                         {CATEGORIES.map(cat => (
-                          <button
+                          <a
                             key={cat.id}
-                            onClick={() => {
+                            href={getHref('category', cat.slug)}
+                            onClick={(e) => {
+                              e.preventDefault();
                               navigate('category', cat.slug);
                               closeAll();
                             }}
-                            className="w-full text-left px-2.5 py-1.5 rounded-[5px] text-[0.82rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] font-medium flex items-center justify-between"
+                            className="w-full text-left px-2.5 py-1.5 rounded-[5px] text-[0.82rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] font-medium flex items-center justify-between block"
                           >
                             <span>{cat.name}</span>
                             <span className="font-mono-data text-[0.68rem] text-[var(--ink-faint)]">{cat.tools.length}</span>
-                          </button>
+                          </a>
                         ))}
                       </div>
                     )}
@@ -532,16 +545,18 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) 
                     {drawerAccordions.problems && (
                       <div className="p-1.5 space-y-0.5 border-t border-[var(--line)]">
                         {PROBLEM_HUBS.map(hub => (
-                          <button
+                          <a
                             key={hub.id}
-                            onClick={() => {
+                            href={getHref('hub', hub.slug)}
+                            onClick={(e) => {
+                              e.preventDefault();
                               navigate('hub', hub.slug);
                               closeAll();
                             }}
-                            className="w-full text-left px-2.5 py-1.5 rounded-[5px] text-[0.82rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] truncate"
+                            className="w-full text-left px-2.5 py-1.5 rounded-[5px] text-[0.82rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] truncate block"
                           >
                             #{hub.num}. {hub.hubLabel}
-                          </button>
+                          </a>
                         ))}
                       </div>
                     )}
@@ -563,16 +578,18 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) 
                     {drawerAccordions.businesses && (
                       <div className="p-1.5 space-y-0.5 border-t border-[var(--line)]">
                         {BUSINESS_TYPES.map(biz => (
-                          <button
+                          <a
                             key={biz.id}
-                            onClick={() => {
+                            href={getHref('business', biz.slug)}
+                            onClick={(e) => {
+                              e.preventDefault();
                               navigate('business', biz.slug);
                               closeAll();
                             }}
-                            className="w-full text-left px-2.5 py-1.5 rounded-[5px] text-[0.82rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] font-medium"
+                            className="w-full text-left px-2.5 py-1.5 rounded-[5px] text-[0.82rem] text-[var(--ink)] hover:bg-[var(--moss-tint)] hover:text-[var(--moss-dark)] font-medium block"
                           >
                             {biz.name}
-                          </button>
+                          </a>
                         ))}
                       </div>
                     )}
