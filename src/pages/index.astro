@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { HomePage } from '../pages/HomePage';
+---
+
+<Layout
+  title="Groundwork: Unbiased Software Guides for Growing Businesses"
+  description="Clear scorecards and unbiased software guides for growing small businesses. We test software independently with zero paid rankings."
+  currentRoute={{ type: 'home' }}
+>
+  <HomePage client:load />
+</Layout>

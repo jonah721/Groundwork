@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { AboutPage } from '../pages/AboutPage';
+---
+
+<Layout
+  title="About & Testing Methodology | Groundwork"
+  description="Learn about our 100% independent binary software testing methodology, zero paid rankings guarantee, and affiliate disclosures."
+  currentRoute={{ type: 'about' }}
+>
+  <AboutPage client:load />
+</Layout>

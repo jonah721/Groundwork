@@ -1,0 +1,60 @@
+---
+import { HeaderNav } from '../components/HeaderNav';
+import { Footer } from '../components/Footer';
+import { DisclosureBanner } from '../components/DisclosureBanner';
+import { Analytics } from '@vercel/analytics/react';
+import '../index.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  currentRoute?: { type: string; slug?: string };
+}
+
+const {
+  title = 'Groundwork: Unbiased Software Guides for Growing Businesses',
+  description = 'Clear scorecards and unbiased software guides for growing small businesses. We test software independently with zero paid rankings.',
+  currentRoute = { type: 'home' }
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://groundwork-guides.vercel.app');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="yGq-gFJAaziwZwGATxguE3BP1o-_p06wtHpvLqgLa9s" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body className="bg-[var(--paper)] text-[var(--ink)] antialiased min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)]">
+      <!-- Site-wide Disclosure Banner -->
+      <DisclosureBanner client:load />
+
+      <!-- Primary Navigation -->
+      <HeaderNav client:load currentRoute={currentRoute} />
+
+      <!-- Main Pre-rendered Static HTML Content -->
+      <main className="flex-1">
+        <slot />
+      </main>
+
+      <!-- Site Footer -->
+      <Footer client:load />
+
+      <!-- Vercel Web Analytics -->
+      <Analytics client:load />
+    </div>
+  </body>
+</html>

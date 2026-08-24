@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { BusinessPage } from '../../pages/BusinessPage';
+import { BUSINESS_TYPES } from '../../data/businesses';
+
+export async function getStaticPaths() {
+  return BUSINESS_TYPES.map((business) => ({
+    params: { slug: business.slug },
+    props: { business },
+  }));
+}
+
+const { business } = Astro.props;
+---
+
+<Layout
+  title={`${business.name} Software Guide | Groundwork`}
+  description={business.description}
+  currentRoute={{ type: 'business', slug: business.slug }}
+>
+  <BusinessPage client:load business={business} />
+</Layout>

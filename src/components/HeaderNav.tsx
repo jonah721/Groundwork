@@ -18,8 +18,8 @@ import {
 } from 'lucide-react';
 
 interface HeaderNavProps {
-  currentRoute: { type: string; slug?: string };
-  navigate: (type: string, slug?: string) => void;
+  currentRoute?: { type: string; slug?: string };
+  navigate?: (type: string, slug?: string) => void;
 }
 
 interface PageHeading {
@@ -28,7 +28,7 @@ interface PageHeading {
   level: number;
 }
 
-export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute, navigate }) => {
+export const HeaderNav: React.FC<HeaderNavProps> = ({ currentRoute = { type: 'home' }, navigate }) => {
   const [activeTopDropdown, setActiveTopDropdown] = useState<string | null>(null);
   const [indexDrawerOpen, setIndexDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');

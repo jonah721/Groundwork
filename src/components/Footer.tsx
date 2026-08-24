@@ -5,10 +5,17 @@ import { BUSINESS_TYPES } from '../data/businesses';
 import { getHref } from '../utils/navigation';
 
 interface FooterProps {
-  navigate: (type: string, slug?: string) => void;
+  navigate?: (type: string, slug?: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ navigate }) => {
+  const handleNav = (type: string, slug?: string) => {
+    if (navigate) {
+      navigate(type, slug);
+    } else {
+      window.location.href = getHref(type, slug);
+    }
+  };
   return (
     <footer className="bg-[var(--ink)] text-white pt-12 pb-8 border-t border-[var(--ink)] mt-16">
       <div className="max-w-[1120px] mx-auto px-4 md:px-6">

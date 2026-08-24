@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ProblemHubPage } from '../../pages/ProblemHubPage';
+import { PROBLEM_HUBS } from '../../data/hubs';
+
+export async function getStaticPaths() {
+  return PROBLEM_HUBS.map((hub) => ({
+    params: { slug: hub.slug },
+    props: { hub },
+  }));
+}
+
+const { hub } = Astro.props;
+---
+
+<Layout
+  title={`${hub.title} | Groundwork Problem Navigator`}
+  description={hub.intro}
+  currentRoute={{ type: 'hub', slug: hub.slug }}
+>
+  <ProblemHubPage client:load hub={hub} />
+</Layout>

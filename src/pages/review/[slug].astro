@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ReviewPage } from '../../pages/ReviewPage';
+import { TOOLS } from '../../data/tools';
+
+export async function getStaticPaths() {
+  return TOOLS.map((tool) => ({
+    params: { slug: tool.slug },
+    props: { tool },
+  }));
+}
+
+const { tool } = Astro.props;
+---
+
+<Layout
+  title={`${tool.name} Evaluation & Review | Groundwork`}
+  description={tool.tagline}
+  currentRoute={{ type: 'review', slug: tool.slug }}
+>
+  <ReviewPage client:load tool={tool} />
+</Layout>

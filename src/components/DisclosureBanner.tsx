@@ -13,14 +13,12 @@ export const DisclosureBanner: React.FC<DisclosureBannerProps> = ({ onAboutClick
         <span>
           Groundwork is reader-supported. We evaluate software independently with zero paid placements or sponsored scores.
         </span>
-        {onAboutClick && (
-          <button
-            onClick={onAboutClick}
-            className="text-[var(--moss-dark)] hover:text-[var(--moss)] underline font-mono-data text-[0.78rem] ml-1"
-          >
-            How we test & score →
-          </button>
-        )}
+        <a
+          href="/about"
+          className="text-[var(--moss-dark)] hover:text-[var(--moss)] underline font-mono-data text-[0.78rem] ml-1"
+        >
+          How we test & score →
+        </a>
       </div>
     </div>
   );
