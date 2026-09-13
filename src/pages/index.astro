@@ -1,6 +1,12 @@
 ---
+// Static home page: fully rendered to HTML at build time.
+// QuizWidget remains a React island (interactive).
 import Layout from '../layouts/Layout.astro';
-import { HomePage } from '../pages/HomePage';
+import { QuizWidget } from '../components/QuizWidget';
+import { PROBLEM_HUBS } from '../data/hubs';
+import { BUSINESS_TYPES } from '../data/businesses';
+import { CATEGORIES } from '../data/categories';
+import { getHref } from '../utils/navigation';
 ---
 
 <Layout
@@ -8,5 +14,191 @@ import { HomePage } from '../pages/HomePage';
   description="Clear scorecards and unbiased software guides for growing small businesses. We test software independently with zero paid rankings."
   currentRoute={{ type: 'home' }}
 >
-  <HomePage client:load />
+  <div class="space-y-16 pb-16">
+    <!-- Hero Section -->
+    <section class="bg-[var(--paper)] py-12 md:py-16 border-b border-[var(--line)]">
+      <div class="max-w-[1120px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <!-- Left Hero Column -->
+          <div class="lg:col-span-7 space-y-6 text-left">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-[var(--moss-tint)] border border-[#CBD8CC] rounded-full">
+              <span class="w-2 h-2 rounded-full bg-[var(--moss)]"></span>
+              <span class="font-mono-data text-[0.78rem] font-semibold text-[var(--moss-dark)] uppercase tracking-wider">
+                2026 Small Business Software Index
+              </span>
+            </div>
+
+            <h1 class="font-display font-semibold text-[2.5rem] md:text-[3.25rem] leading-[1.12] text-[var(--ink)] tracking-tight text-left">
+              Cut Through Software Hype with Clear Scorecards
+            </h1>
+
+            <p class="text-[1.12rem] text-[var(--ink-soft)] leading-relaxed max-w-xl text-left">
+              We independently evaluate business software against fixed binary criteria. No sponsored ranks, no hidden affiliate fluff, just objective software choices.
+            </p>
+
+            <!-- Quiz Widget Card (React island) -->
+            <div class="pt-2">
+              <QuizWidget client:visible />
+            </div>
+          </div>
+
+          <!-- Right Hero Column: Business Problem Index Stack -->
+          <div id="home-problems" class="lg:col-span-5 space-y-4 bg-[var(--paper-raised)] p-6 rounded-[10px] border border-[var(--line-strong)] shadow-xs text-left">
+            <div class="flex items-center justify-between border-b border-[var(--line)] pb-3">
+              <div>
+                <span class="font-mono-data text-[0.72rem] font-bold uppercase text-[var(--moss-dark)] tracking-wider block text-left">
+                  THE NAVIGATOR SPINE
+                </span>
+                <h2 class="font-display font-semibold text-[1.2rem] text-[var(--ink)] text-left">
+                  Browse by Business Problem
+                </h2>
+              </div>
+              <span class="font-mono-data text-[0.78rem] text-[var(--ink-faint)]">
+                {PROBLEM_HUBS.length} PROBLEMS
+              </span>
+            </div>
+
+            <p class="text-[0.88rem] text-[var(--ink-soft)] text-left">
+              Identify the exact challenge slowing down your team and view curated software recommendations:
+            </p>
+
+            <div class="space-y-2.5">
+              {PROBLEM_HUBS.map((hub) => (
+                <a
+                  href={getHref('hub', hub.slug)}
+                  class="group flex items-center justify-between p-4 bg-[var(--paper-raised)] hover:bg-[var(--moss-tint)]/60 border border-[var(--line)] hover:border-[var(--moss)] rounded-[10px] transition-all duration-200 block"
+                >
+                  <div class="flex items-center gap-3.5">
+                    <span class="font-mono-data text-[0.82rem] font-semibold text-[var(--ink-faint)] group-hover:text-[var(--moss-dark)] transition-colors">
+                      {hub.num}
+                    </span>
+                    <span class="font-semibold text-[0.98rem] text-[var(--ink)] group-hover:text-[var(--moss-dark)] transition-colors">
+                      {hub.hubLabel}
+                    </span>
+                  </div>
+
+                  <div class="w-7 h-7 rounded-full bg-[var(--paper)] group-hover:bg-[var(--moss)] flex items-center justify-center text-[var(--ink-soft)] group-hover:text-white transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Software Categories Section -->
+    <section id="home-categories" class="bg-[var(--paper-raised)] py-12 border-y border-[var(--line)]">
+      <div class="max-w-[1120px] mx-auto px-4 md:px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 text-left">
+          <div>
+            <span class="font-mono-data text-[0.75rem] font-bold text-[var(--moss-dark)] uppercase tracking-wider block mb-1 text-left">
+              CATEGORY DIRECTORY
+            </span>
+            <h2 class="text-display-h2 text-[var(--ink)] text-left">
+              Evaluated Software Categories
+            </h2>
+          </div>
+          <p class="text-[0.92rem] text-[var(--ink-soft)] max-w-md text-left">
+            Every category uses a fixed 4-segment scoring matrix. Click any guide to view full comparison tables and reviews.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {CATEGORIES.map((cat) => (
+            <a
+              href={getHref('category', cat.slug)}
+              class="group p-6 bg-[var(--paper)] hover:bg-white border border-[var(--line)] hover:border-[var(--moss)] rounded-[10px] transition-all duration-200 flex flex-col justify-between text-left block"
+            >
+              <div>
+                <div class="font-mono-data text-[0.72rem] font-semibold text-[var(--moss-dark)] uppercase tracking-wider mb-1 text-left">
+                  {cat.eyebrow}
+                </div>
+                <h3 class="font-display font-semibold text-[1.25rem] text-[var(--ink)] group-hover:text-[var(--moss-dark)] mb-2 transition-colors text-left">
+                  {cat.name}
+                </h3>
+                <p class="text-[0.88rem] text-[var(--ink-soft)] leading-relaxed mb-4 line-clamp-3 text-left">
+                  {cat.intro}
+                </p>
+              </div>
+
+              <div class="pt-4 border-t border-[var(--line)] flex items-center justify-between text-left">
+                <span class="font-mono-data text-[0.78rem] text-[var(--ink-faint)] text-left">
+                  {cat.tools.length} Evaluated Tools
+                </span>
+                <span class="font-mono-data text-[0.82rem] font-semibold text-[var(--moss-dark)] group-hover:underline flex items-center gap-1">
+                  View Guide
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Browse by Business Type Grid -->
+    <section class="max-w-[1120px] mx-auto px-4 md:px-6">
+      <div class="mb-8">
+        <span class="font-mono-data text-[0.75rem] font-bold text-[var(--moss-dark)] uppercase tracking-wider block mb-1">
+          TAILORED SHORTLISTS
+        </span>
+        <h2 class="text-display-h2 text-[var(--ink)] mb-2">
+          Browse Guides by Business Model
+        </h2>
+        <p class="text-[0.98rem] text-[var(--ink-soft)] max-w-2xl">
+          A software stack that works for an e-commerce brand will fail a local service business. Select your business type to see curated recommendations.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {BUSINESS_TYPES.map((biz) => (
+          <a
+            href={getHref('business', biz.slug)}
+            class="group p-5 bg-[var(--paper-raised)] hover:bg-white border border-[var(--line)] hover:border-[var(--moss)] rounded-[10px] transition-all duration-200 flex flex-col justify-between block"
+          >
+            <div>
+              <h3 class="font-display font-semibold text-[1.15rem] text-[var(--ink)] group-hover:text-[var(--moss-dark)] mb-2 transition-colors">
+                {biz.name}
+              </h3>
+              <p class="text-[0.9rem] text-[var(--ink-soft)] leading-relaxed">
+                {biz.description}
+              </p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-[var(--line)]/60 flex items-center justify-between text-[0.82rem] font-mono-data text-[var(--moss-dark)] font-semibold">
+              <span>View Tool Recommendations</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Editorial Standard Banner -->
+    <section id="home-methodology" class="max-w-[1120px] mx-auto px-4 md:px-6">
+      <div class="p-8 bg-[var(--moss-tint)] border border-[#CBD8CC] rounded-[10px] grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <div class="md:col-span-8 space-y-2">
+          <span class="font-mono-data text-[0.75rem] font-bold uppercase tracking-wider text-[var(--moss-dark)]">
+            OUR EDITORIAL GUARANTEE
+          </span>
+          <h3 class="font-display font-semibold text-[1.4rem] text-[var(--ink)]">
+            No Sponsored Scores. No Hidden Rankings.
+          </h3>
+          <p class="text-[0.95rem] text-[var(--ink-soft)] leading-relaxed">
+            Software vendors cannot pay to alter their scorecard evaluations or rank higher in comparison tables. Every score is derived from our fixed binary testing methodology.
+          </p>
+        </div>
+        <div class="md:col-span-4 flex justify-start md:justify-end">
+          <a
+            href={getHref('about')}
+            class="font-mono-data text-[0.85rem] font-semibold bg-[var(--moss-dark)] hover:bg-[var(--moss)] text-white px-5 py-3 rounded-[8px] transition-colors inline-block"
+          >
+            Read Full Methodology
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>
