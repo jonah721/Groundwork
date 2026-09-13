@@ -11,12 +11,30 @@ export async function getStaticPaths() {
 }
 
 const { hub } = Astro.props;
+
+const SITE_URL = 'https://groundworkforgrowth.vercel.app';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: hub.title,
+  description: hub.description,
+  url: `${SITE_URL}/hub/${hub.slug}`,
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: hub.recommendedToolSlugs.map((slug, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${SITE_URL}/review/${slug}`
+    }))
+  }
+};
 ---
 
 <Layout
   title={`${hub.title} | Groundwork Problem Navigator`}
-  description={hub.intro}
+  description={hub.description}
   currentRoute={{ type: 'hub', slug: hub.slug }}
+  jsonLd={jsonLd}
 >
   <ProblemHubPage client:load hub={hub} />
 </Layout>

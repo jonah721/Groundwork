@@ -11,12 +11,32 @@ export async function getStaticPaths() {
 }
 
 const { business } = Astro.props;
+
+const SITE_URL = 'https://groundworkforgrowth.vercel.app';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${business.name} Software Guide`,
+  description: business.description,
+  url: `${SITE_URL}/business/${business.slug}`,
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: business.toolCategories.flatMap((cat, ci) =>
+      cat.toolSlugs.map((slug, i) => ({
+        '@type': 'ListItem',
+        position: ci * 100 + i + 1,
+        url: `${SITE_URL}/review/${slug}`
+      }))
+    )
+  }
+};
 ---
 
 <Layout
   title={`${business.name} Software Guide | Groundwork`}
   description={business.description}
   currentRoute={{ type: 'business', slug: business.slug }}
+  jsonLd={jsonLd}
 >
   <BusinessPage client:load business={business} />
 </Layout>

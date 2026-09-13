@@ -9,16 +9,31 @@ interface Props {
   title?: string;
   description?: string;
   currentRoute?: { type: string; slug?: string };
+  /** Optional JSON-LD structured data object(s) for this page. */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title = 'Groundwork: Unbiased Software Guides for Growing Businesses',
   description = 'Clear scorecards and unbiased software guides for growing small businesses. We test software independently with zero paid rankings.',
-  currentRoute = { type: 'home' }
+  currentRoute = { type: 'home' },
+  jsonLd
 } = Astro.props;
 
 const cleanPath = Astro.url.pathname.replace(/\/$/, '');
 const canonicalURL = new URL(cleanPath, Astro.site || 'https://groundworkforgrowth.vercel.app');
+const SITE_URL = 'https://groundworkforgrowth.vercel.app';
+const ogImage = `${SITE_URL}/og-image.png`;
+
+// Site-wide WebApplication/WebSite schema, merged with any page-specific schema.
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Groundwork',
+  url: SITE_URL,
+  description: 'Unbiased software guides and scorecards for growing small businesses.'
+};
+const jsonLdBlocks = [siteJsonLd, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])];
 ---
 
 <!doctype html>
@@ -32,6 +47,24 @@ const canonicalURL = new URL(cleanPath, Astro.site || 'https://groundworkforgrow
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Groundwork" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {jsonLdBlocks.map((block) => (
+      <script type="application/ld+json" set:html={JSON.stringify(block)} />
+    ))}
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -11,12 +11,56 @@ export async function getStaticPaths() {
 }
 
 const { tool } = Astro.props;
+
+const SITE_URL = 'https://groundworkforgrowth.vercel.app';
+const scoreNum = parseFloat(tool.score) || 0;
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: tool.name,
+    description: tool.tagline,
+    url: `${SITE_URL}/review/${tool.slug}`,
+    brand: { '@type': 'Brand', name: tool.name },
+    ...(tool.websiteUrl ? { sameAs: tool.websiteUrl } : {}),
+    review: {
+      '@type': 'Review',
+      name: `${tool.name} Evaluation & Review`,
+      reviewBody: tool.verdict.summary,
+      author: { '@type': 'Organization', name: 'Groundwork' },
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: String(Math.min(scoreNum, 5) || 4),
+        bestRating: '5',
+        worstRating: '1'
+      },
+      positiveNotes: {
+        '@type': 'ItemList',
+        itemListElement: tool.pros.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p }))
+      },
+      negativeNotes: {
+        '@type': 'ItemList',
+        itemListElement: tool.cons.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c }))
+      }
+    }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: tool.categoryName, item: `${SITE_URL}/category/${tool.categorySlug}` },
+      { '@type': 'ListItem', position: 3, name: tool.name, item: `${SITE_URL}/review/${tool.slug}` }
+    ]
+  }
+];
 ---
 
 <Layout
   title={`${tool.name} Evaluation & Review | Groundwork`}
   description={tool.tagline}
   currentRoute={{ type: 'review', slug: tool.slug }}
+  jsonLd={jsonLd}
 >
   <ReviewPage client:load tool={tool} />
 </Layout>
