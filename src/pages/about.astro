@@ -1,6 +1,7 @@
 ---
+// Static about page: fully rendered to HTML at build time.
 import Layout from '../layouts/Layout.astro';
-import { AboutPage } from '../pages/AboutPage';
+import { getHref } from '../utils/navigation';
 ---
 
 <Layout
@@ -8,5 +9,141 @@ import { AboutPage } from '../pages/AboutPage';
   description="Learn about our 100% independent binary software testing methodology, zero paid rankings guarantee, and affiliate disclosures."
   currentRoute={{ type: 'about' }}
 >
-  <AboutPage client:load />
+  <div class="max-w-[800px] mx-auto px-4 md:px-6 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-1.5 font-mono-data text-[0.78rem] text-[var(--ink-faint)]">
+      <a href={getHref('home')} class="hover:text-[var(--ink)] flex items-center gap-1 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </a>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[var(--line-strong)]"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--ink)] font-semibold truncate max-w-[200px] md:max-w-[300px]">About &amp; Methodology</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="space-y-4 pb-6 border-b border-[var(--line)]">
+      <div class="font-mono-data text-[0.78rem] font-bold text-[var(--moss-dark)] uppercase tracking-widest">
+        About Groundwork
+      </div>
+      <h1 class="text-display-h1 text-[var(--ink)]">
+        How we decide what to recommend
+      </h1>
+      <p class="text-[1.15rem] font-medium text-[var(--moss-dark)] bg-[var(--moss-tint)]/60 p-4 rounded-[8px] border border-[#CBD8CC] leading-relaxed">
+        We make money when you click an affiliate link - here's exactly how that does and doesn't shape what you see on this site.
+      </p>
+    </header>
+
+    <!-- Content Stream -->
+    <div class="space-y-12 text-[1.02rem] text-[var(--ink)] leading-[1.75]">
+      <!-- How we choose what to review -->
+      <section class="space-y-4">
+        <h2 class="text-display-h2 text-[var(--ink)] font-semibold">
+          How we choose what to review
+        </h2>
+        <p class="text-[var(--ink-soft)]">
+          We start from a problem, not a product. Every category on this site exists because it answers a specific bottleneck ("I'm losing leads," "no one finds me online") that comes up constantly for small and growing businesses. We pick 3&ndash;6 tools per category: enough to give a real choice, few enough that the comparison stays honest instead of turning into an exhaustive, unhelpful list.
+        </p>
+        <p class="text-[var(--ink-soft)]">
+          We don't review every tool in a category, and we say so. If a tool isn't here, that's not automatically a verdict against it - it may just not have been evaluated yet.
+        </p>
+      </section>
+
+      <!-- How we score -->
+      <section class="space-y-4 pt-4 border-t border-[var(--line)]">
+        <h2 class="text-display-h2 text-[var(--ink)] font-semibold">
+          How we score
+        </h2>
+        <p class="text-[var(--ink-soft)]">
+          Every tool on this site is scored against four criteria, and those criteria are always shown on the category page before you see a single recommendation, not hidden, not decided after the fact to justify a pick.
+        </p>
+        <p class="text-[var(--ink-soft)]">
+          The four criteria change per category, because what matters for a CRM (setup speed, pricing, support, scale) isn't what matters for a website builder (design flexibility, built-in SEO). What doesn't change is the format: four named, defined criteria, shown up front, with a pass/fail bar for each, not a five-star rating that hides how the number was decided.
+        </p>
+        <p class="text-[var(--ink-soft)]">
+          A tool meeting a criterion is a judgment call, made by actually using the tool, not by reading its marketing page. We note where a tool is genuinely strong and where it falls short, on every single review: the "cons" section is mandatory, not optional, and it's never skipped to make a tool look better.
+        </p>
+      </section>
+
+      <!-- What our badges mean -->
+      <section class="space-y-4 pt-4 border-t border-[var(--line)]">
+        <h2 class="text-display-h2 text-[var(--ink)] font-semibold">
+          What our badges mean
+        </h2>
+        <ul class="space-y-3 pl-1 text-[var(--ink-soft)]">
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-[var(--ink)] shrink-0">&bull;</span>
+            <span>
+              <strong class="text-[var(--ink)] font-semibold">Our Pick</strong>: the tool we'd recommend first for that category's primary use case
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-[var(--ink)] shrink-0">&bull;</span>
+            <span>
+              <strong class="text-[var(--ink)] font-semibold">Best for Beginners</strong> - the lowest-friction option, even if it's not the most powerful
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-[var(--ink)] shrink-0">&bull;</span>
+            <span>
+              <strong class="text-[var(--ink)] font-semibold">Best Value</strong>: the strongest results for the price, not necessarily the cheapest
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-[var(--ink)] shrink-0">&bull;</span>
+            <span>
+              <strong class="text-[var(--ink)] font-semibold">Runner-Up</strong>: a genuinely good option that lost to "Our Pick" for a specific, stated reason, not a consolation prize
+            </span>
+          </li>
+        </ul>
+        <p class="text-[var(--ink-soft)] pt-2">
+          A tool gets one badge, or none. Not every tool in a comparison needs a superlative, and we don't invent one just to make every row look like a winner.
+        </p>
+      </section>
+
+      <!-- Affiliate disclosure -->
+      <section id="disclosure" class="space-y-4 pt-6 border-t border-[var(--line)] scroll-mt-20">
+        <div class="p-6 md:p-8 bg-[var(--paper-raised)] border border-[var(--line-strong)] rounded-[10px] space-y-4 shadow-xs">
+          <h2 class="text-display-h2 text-[var(--ink)] font-semibold">
+            Affiliate disclosure
+          </h2>
+          <p class="text-[var(--ink-soft)]">
+            Some links on this site are affiliate links. If you click one and sign up for or buy a tool, we may earn a commission - at no extra cost to you. This is how the site makes money and stays free to use.
+          </p>
+          <p class="text-[var(--ink-soft)]">
+            Here's what that does not change: rankings, badges, and "our pick" decisions are made before we check which tools have an affiliate program, not after. Where a tool we recommend doesn't have an affiliate program - like several tools in our Analytics category - we still recommend it and link to it directly, with no commission. We'd rather point you to the right tool with no payout than the wrong tool with one.
+          </p>
+          <p class="text-[var(--ink-soft)]">
+            If you ever think a recommendation looks like it's driven by commission size instead of fit, tell us - see Corrections below.
+          </p>
+        </div>
+      </section>
+
+      <!-- Update policy -->
+      <section class="space-y-4 pt-4 border-t border-[var(--line)]">
+        <h2 class="text-display-h2 text-[var(--ink)] font-semibold">
+          Update policy
+        </h2>
+        <p class="text-[var(--ink-soft)]">
+          Tools change - pricing shifts, features get added or cut, a product gets acquired and changes direction entirely. Every review shows a "Reviewed [month, year]" date at the top. We aim to re-check pricing and core features at least every six months, and sooner if we hear something's changed.
+        </p>
+        <p class="text-[var(--ink-soft)]">
+          If you're reading a review and the pricing or features described don't match what you see on the tool's own site, the tool's site is the source of truth, and we'd appreciate a note so we can update it (see below).
+        </p>
+      </section>
+
+      <!-- Corrections and contact -->
+      <section class="space-y-4 pt-4 border-t border-[var(--line)]">
+        <h2 class="text-display-h2 text-[var(--ink)] font-semibold">
+          Corrections and contact
+        </h2>
+        <p class="text-[var(--ink-soft)]">
+          Found something out of date, wrong, or unclear? Contact us at
+          <a href="mailto:editorial@groundwork.guide" class="text-[var(--moss-dark)] font-medium underline hover:text-[var(--moss)]">
+            editorial@groundwork.guide
+          </a>
+          - we'd rather fix it than leave it.
+        </p>
+      </section>
+    </div>
+  </div>
 </Layout>
