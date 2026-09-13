@@ -1,0 +1,96 @@
+---
+// Static comparison table: fully rendered to HTML at build time.
+import type { SoftwareTool } from '../../types';
+import { getHref } from '../../utils/navigation';
+
+interface Props {
+  tools: SoftwareTool[];
+  id?: string;
+}
+
+const { tools, id } = Astro.props;
+---
+
+<div class="w-full overflow-x-auto rounded-[10px] border border-[var(--line)] bg-[var(--paper-raised)] shadow-xs">
+  <table class="w-full text-left border-collapse min-w-[840px]">
+    <thead>
+      <tr class="bg-[var(--paper)] border-b border-[var(--line)] text-[0.78rem] font-mono-data uppercase tracking-wider text-[var(--ink-soft)] sticky top-0 z-10">
+        <th class="py-3.5 px-4 font-semibold w-[220px]">Tool Name &amp; Score</th>
+        <th class="py-3.5 px-4 font-semibold w-[180px]">Best For</th>
+        <th class="py-3.5 px-4 font-semibold w-[130px]">Starting Price</th>
+        <th class="py-3.5 px-4 font-semibold w-[110px]">Setup Time</th>
+        <th class="py-3.5 px-4 font-semibold w-[200px]">Standout Feature</th>
+        <th class="py-3.5 px-4 font-semibold w-[160px] text-right">Our Verdict</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-[var(--line)] text-[0.92rem]">
+      {tools.map((tool) => {
+        const isOurPick = tool.badge?.toUpperCase() === 'OUR PICK';
+        return (
+          <tr class={isOurPick ? 'bg-[var(--ochre-tint)]/60' : 'hover:bg-[var(--paper)]/50 transition-colors'}>
+            <td class="py-4 px-4 align-top">
+              <div class="flex flex-col gap-1.5">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <a
+                    href={getHref('review', tool.slug)}
+                    class="font-display font-semibold text-[1.1rem] text-[var(--ink)] hover:text-[var(--moss-dark)] text-left underline decoration-dotted underline-offset-4 decoration-[var(--line-strong)] hover:decoration-[var(--moss-dark)]"
+                  >
+                    {tool.name}
+                  </a>
+                  {tool.badge && (
+                    <span class="inline-block font-mono-data text-[0.72rem] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded-full whitespace-nowrap bg-[var(--ochre)] text-white">
+                      {tool.badge}
+                    </span>
+                  )}
+                </div>
+                <div class="inline-flex flex-col gap-1.5">
+                  <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-[3px]">
+                      {tool.scorecard.map((segment) => (
+                        <div
+                          title={`${segment.label}: ${segment.passed ? 'Meets bar' : 'Needs improvement'}`}
+                          class={`w-[14px] h-[8px] rounded-[2px] transition-colors ${segment.passed ? (segment.isStandout ? 'bg-[var(--ochre)]' : 'bg-[var(--moss)]') : 'bg-[var(--line)]'}`}
+                        />
+                      ))}
+                    </div>
+                    <span class="font-mono-data text-[0.78rem] text-[var(--ink-soft)] font-medium">
+                      {tool.scorecard.filter((s) => s.passed).length}/{tool.scorecard.length}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <td class="py-4 px-4 align-top text-[var(--ink-soft)] font-medium">
+              {tool.bestFor}
+            </td>
+
+            <td class="py-4 px-4 align-top">
+              <span class="font-mono-data text-[0.88rem] font-semibold text-[var(--ink)]">
+                {tool.startingPrice}
+              </span>
+            </td>
+
+            <td class="py-4 px-4 align-top font-mono-data text-[0.85rem] text-[var(--ink-soft)]">
+              {tool.setupTime}
+            </td>
+
+            <td class="py-4 px-4 align-top text-[var(--ink-soft)] text-[0.88rem]">
+              {tool.standoutFeature}
+            </td>
+
+            <td class="py-4 px-4 align-top text-right">
+              <a
+                href={getHref('review', tool.slug)}
+                class="inline-flex items-center gap-1.5 font-mono-data text-[0.8rem] font-semibold text-[var(--moss-dark)] hover:text-[var(--moss)] bg-white/80 hover:bg-white border border-[var(--line-strong)] hover:border-[var(--moss)] px-3 py-1.5 rounded-[6px] transition-all"
+              >
+                Read Review
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>
