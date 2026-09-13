@@ -1,7 +1,7 @@
 ---
 import { HeaderNav } from '../components/HeaderNav';
-import { Footer } from '../components/Footer';
-import { DisclosureBanner } from '../components/DisclosureBanner';
+import FooterStatic from '../components/static/Footer.astro';
+import DisclosureBannerStatic from '../components/static/DisclosureBanner.astro';
 import { Analytics } from '@vercel/analytics/react';
 import '../index.css';
 
@@ -73,8 +73,8 @@ const jsonLdBlocks = [siteJsonLd, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? 
   </head>
   <body className="bg-[var(--paper)] text-[var(--ink)] antialiased min-h-screen flex flex-col">
     <div className="min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)]">
-      <!-- Site-wide Disclosure Banner -->
-      <DisclosureBanner client:load />
+      <!-- Site-wide Disclosure Banner (static) -->
+      <DisclosureBannerStatic />
 
       <!-- Primary Navigation -->
       <HeaderNav client:load currentRoute={currentRoute} />
@@ -84,8 +84,8 @@ const jsonLdBlocks = [siteJsonLd, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? 
         <slot />
       </main>
 
-      <!-- Site Footer -->
-      <Footer client:load />
+      <!-- Site Footer (static) -->
+      <FooterStatic />
 
       <!-- Vercel Web Analytics -->
       <Analytics client:load />
