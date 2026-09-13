@@ -1,7 +1,10 @@
 ---
+// Static business page: fully rendered to HTML at build time.
 import Layout from '../../layouts/Layout.astro';
-import { BusinessPage } from '../../pages/BusinessPage';
 import { BUSINESS_TYPES } from '../../data/businesses';
+import { TOOLS } from '../../data/tools';
+import { getHref } from '../../utils/navigation';
+import type { BusinessType, CuratedToolItem } from '../../types';
 
 export async function getStaticPaths() {
   return BUSINESS_TYPES.map((business) => ({
@@ -10,7 +13,10 @@ export async function getStaticPaths() {
   }));
 }
 
-const { business } = Astro.props;
+const { business } = Astro.props as { business: BusinessType };
+const eyebrow = business.eyebrow || `Business type \u00b7 ${business.name}`;
+const h1 = business.h1 || `The growth stack for ${business.name.toLowerCase()} businesses`;
+const intro = business.intro || business.description;
 
 const SITE_URL = 'https://groundworkforgrowth.vercel.app';
 const jsonLd = {
@@ -30,6 +36,8 @@ const jsonLd = {
     )
   }
 };
+
+const externalIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
 ---
 
 <Layout
@@ -38,5 +46,219 @@ const jsonLd = {
   currentRoute={{ type: 'business', slug: business.slug }}
   jsonLd={jsonLd}
 >
-  <BusinessPage client:load business={business} />
+  <div class="max-w-[840px] mx-auto px-4 md:px-6 py-8 md:py-12 space-y-10">
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-1.5 font-mono-data text-[0.78rem] text-[var(--ink-faint)]">
+      <a href={getHref('home')} class="hover:text-[var(--ink)] flex items-center gap-1 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </a>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[var(--line-strong)]"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--ink)] font-semibold truncate max-w-[200px] md:max-w-[300px]">{business.name}</span>
+    </nav>
+
+    <!-- Header -->
+    <header id="biz-profile" class="space-y-4 pb-6 border-b border-[var(--line)]">
+      <div class="font-mono-data text-[0.78rem] font-bold text-[var(--moss-dark)] uppercase tracking-widest">
+        {eyebrow}
+      </div>
+      <h1 class="text-display-h1 text-[var(--ink)]">
+        {h1}
+      </h1>
+      <p class="text-[1.08rem] text-[var(--ink-soft)] leading-relaxed">
+        {intro}
+      </p>
+    </header>
+
+    <!-- Lead Section -->
+    {business.leadSection && (
+      <section class="p-6 md:p-8 bg-gradient-to-br from-[var(--moss-light)]/20 to-[var(--paper-raised)] border-2 border-[var(--moss)]/30 rounded-[12px] space-y-4 shadow-sm">
+        <div class="font-mono-data text-[0.8rem] font-bold text-[var(--moss-dark)] uppercase tracking-wider flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[var(--moss-dark)] shrink-0 animate-pulse"></span>
+          {business.leadSection.heading}
+        </div>
+        <p class="text-[1.02rem] text-[var(--ink)] leading-relaxed font-medium">
+          {business.leadSection.body}
+        </p>
+
+        <div class="p-4 bg-[var(--paper-raised)] border border-[var(--line)] rounded-[8px] space-y-2 shadow-xs">
+          <p class="text-[0.98rem] text-[var(--ink)] leading-relaxed">
+            <strong class="font-semibold text-[var(--ink)]">{business.leadSection.primaryToolName}</strong> - {business.leadSection.whyFits}
+          </p>
+          <div class="pt-1 flex items-center gap-2 flex-wrap">
+            <a
+              href={getHref('review', business.leadSection.primaryToolSlug)}
+              class="inline-flex items-center gap-1.5 text-[0.82rem] font-mono-data font-semibold text-[var(--moss-dark)] hover:text-[var(--moss)] underline underline-offset-4"
+            >
+              &rarr; {business.leadSection.reviewLinkText}
+            </a>
+            {business.leadSection.categorySlug && (
+              <span class="text-[var(--ink-soft)] text-[0.75rem]">&bull;</span>
+            )}
+            {business.leadSection.categorySlug && (
+              <a
+                href={getHref('category', business.leadSection.categorySlug)}
+                class="text-[0.78rem] font-mono-data text-[var(--ink-soft)] hover:text-[var(--ink)] underline underline-offset-2"
+              >
+                Full category comparison
+              </a>
+            )}
+          </div>
+        </div>
+
+        {business.leadSection.note && (
+          <p class="text-[0.88rem] text-[var(--ink-soft)] italic pt-2 border-t border-[var(--line)]">
+            {business.leadSection.note}
+          </p>
+        )}
+      </section>
+    )}
+
+    <!-- Curated shortlist -->
+    <section id="biz-stack" class="space-y-8">
+      {business.toolCategories.map((group) => (
+        <div class="space-y-3 pb-6 border-b border-[var(--line)] last:border-0">
+          <h2 class="text-[1.2rem] font-display font-semibold text-[var(--ink)] flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[var(--moss)] shrink-0"></span>
+            {group.role}
+          </h2>
+
+          <div class="space-y-3 pl-2 md:pl-4">
+            {group.items && group.items.length > 0 ? (
+              group.items.map((item: CuratedToolItem) => {
+                if (item.isNoteOnly || !item.toolSlug) {
+                  return (
+                    <div class="p-4 bg-[var(--paper-raised)] border border-[var(--line)] rounded-[8px] space-y-2 shadow-xs">
+                      <p class="text-[0.98rem] text-[var(--ink-soft)] leading-relaxed">
+                        {item.whyFits}
+                      </p>
+                      {item.categorySlugForNote && (
+                        <div class="pt-1">
+                          <a
+                            href={getHref('category', item.categorySlugForNote)}
+                            class="inline-flex items-center gap-1.5 text-[0.82rem] font-mono-data font-semibold text-[var(--moss-dark)] hover:text-[var(--moss)] underline underline-offset-4"
+                          >
+                            &rarr; {item.reviewLinkText || 'See category comparison'}
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                const tool = TOOLS.find((t) => t.slug === item.toolSlug);
+                if (!tool) return null;
+
+                const targetUrl = tool.affiliateUrl || tool.websiteUrl;
+                const isAffiliate = Boolean(tool.affiliateUrl);
+                const reviewLinkText = item.reviewLinkText || `${tool.categoryName} review`;
+
+                return (
+                  <div class="p-4 bg-[var(--paper-raised)] border border-[var(--line)] rounded-[8px] space-y-2 shadow-xs text-left">
+                    <p class="text-[0.98rem] text-[var(--ink)] leading-relaxed">
+                      <strong class="font-semibold text-[var(--ink)]">{tool.name}</strong> - {item.whyFits}
+                    </p>
+                    <div class="pt-1 flex items-center gap-2 flex-wrap">
+                      <a
+                        href={getHref('review', tool.slug)}
+                        class="inline-flex items-center gap-1.5 text-[0.82rem] font-mono-data font-semibold text-[var(--moss-dark)] hover:text-[var(--moss)] underline underline-offset-4"
+                      >
+                        &rarr; {reviewLinkText}
+                      </a>
+                      {targetUrl && (
+                        <span class="text-[var(--ink-soft)] text-[0.75rem]">&bull;</span>
+                      )}
+                      {targetUrl && (
+                        <a
+                          href={targetUrl}
+                          target="_blank"
+                          rel={isAffiliate ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}
+                          class="inline-flex items-center gap-1 text-[0.78rem] font-mono-data text-[var(--moss-dark)] hover:underline font-semibold"
+                        >
+                          Visit {tool.name} <Fragment set:html={externalIcon} />
+                        </a>
+                      )}
+                      <span class="text-[var(--ink-soft)] text-[0.75rem]">&bull;</span>
+                      <a
+                        href={getHref('category', tool.categorySlug)}
+                        class="text-[0.78rem] font-mono-data text-[var(--ink-soft)] hover:text-[var(--ink)] underline underline-offset-2"
+                      >
+                        Full {tool.categoryName} comparison
+                      </a>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              group.toolSlugs.map((slug) => {
+                const tool = TOOLS.find((t) => t.slug === slug);
+                if (!tool) return null;
+
+                const targetUrl = tool.affiliateUrl || tool.websiteUrl;
+                const isAffiliate = Boolean(tool.affiliateUrl);
+
+                return (
+                  <div class="p-4 bg-[var(--paper-raised)] border border-[var(--line)] rounded-[8px] space-y-2 shadow-xs text-left">
+                    <p class="text-[0.98rem] text-[var(--ink)] leading-relaxed">
+                      <strong class="font-semibold text-[var(--ink)]">{tool.name}</strong> - {group.whyFits || tool.tagline}
+                    </p>
+                    <div class="pt-1 flex items-center gap-2 flex-wrap">
+                      <a
+                        href={getHref('review', tool.slug)}
+                        class="inline-flex items-center gap-1.5 text-[0.82rem] font-mono-data font-semibold text-[var(--moss-dark)] hover:text-[var(--moss)] underline underline-offset-4"
+                      >
+                        &rarr; {tool.categoryName} review
+                      </a>
+                      {targetUrl && (
+                        <span class="text-[var(--ink-soft)] text-[0.75rem]">&bull;</span>
+                      )}
+                      {targetUrl && (
+                        <a
+                          href={targetUrl}
+                          target="_blank"
+                          rel={isAffiliate ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}
+                          class="inline-flex items-center gap-1 text-[0.78rem] font-mono-data text-[var(--moss-dark)] hover:underline font-semibold"
+                        >
+                          Visit {tool.name} <Fragment set:html={externalIcon} />
+                        </a>
+                      )}
+                      <span class="text-[var(--ink-soft)] text-[0.75rem]">&bull;</span>
+                      <a
+                        href={getHref('category', tool.categorySlug)}
+                        class="text-[0.78rem] font-mono-data text-[var(--ink-soft)] hover:text-[var(--ink)] underline underline-offset-2"
+                      >
+                        Full {tool.categoryName} comparison
+                      </a>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <!-- Editorial Insert -->
+    {business.editorialInsert && (
+      <section class="p-6 md:p-8 bg-[var(--paper-raised)] border border-[var(--line)] rounded-[12px] space-y-4 shadow-xs mt-10">
+        <h3 class="text-[1.25rem] font-display font-semibold text-[var(--ink)]">
+          {business.editorialInsert.heading}
+        </h3>
+        <p class="text-[0.98rem] text-[var(--ink-soft)] leading-relaxed whitespace-pre-line">
+          {business.editorialInsert.body}
+        </p>
+        {business.editorialInsert.bulletPoints && (
+          <ul class="space-y-2 pt-3 border-t border-[var(--line)]">
+            {business.editorialInsert.bulletPoints.map((point) => (
+              <li class="flex items-start gap-2.5 text-[0.95rem] text-[var(--ink)] leading-relaxed">
+                <span class="text-[var(--moss-dark)] font-bold shrink-0 mt-0.5">&bull;</span>
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    )}
+  </div>
 </Layout>
