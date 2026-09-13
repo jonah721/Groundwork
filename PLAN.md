@@ -52,11 +52,37 @@ templating must remain single-source (see Decisions).
 
 ## Done
 
-- 2026-09-13 - SEO audit: technical items clean (sitemap 71 URLs, robots.txt,
-  canonical, per-page titles/descriptions, 404s work). JSON-LD (Product+Review
-  with rating, BreadcrumbList, ItemList/CollectionPage), og/twitter tags, and
-  a generated og-image added in commit 2085b7b. Hub pages' empty meta
-  description bug (`hub.intro` -> `hub.description`) fixed in the same commit.
+- 2026-09-13 - Site cloned from `github.com/jonah721/Groundwork` into a local
+  `Groundwork/` folder for audit and fixes.
+- 2026-09-13 - Comparative SEO audit against the CSV/JSON Column Type Cleaner
+  site (same owner). Conclusion: Groundwork already handles most technical SEO
+  correctly (Astro pre-render, per-page canonical/title/description, sitemap
+  with 71 URLs, robots.txt pointing at sitemap-index.xml, working 404s); the
+  shared failure is zero backlinks on a fresh vercel.app subdomain, plus the
+  client-rendering problem this plan addresses. No noindex, no deployment
+  protection, no robots blocking found on the live site.
+- 2026-09-13 - Fix 2 of the audit (commit 2085b7b, pushed to main): og tags,
+  site og-image, and JSON-LD structured data.
+  - `src/layouts/Layout.astro`: Open Graph + Twitter card meta on every page
+    (og:title/description/type/url/site_name/image with 1200x630 dimensions),
+    site-wide `WebSite` JSON-LD block, and a new `jsonLd` prop so pages can
+    inject per-page structured data.
+  - `src/pages/review/[slug].astro` (45 pages): `Product` + `Review` schema
+    with rating derived from the score field, pros/cons as `ItemList`s,
+    author = Organization Groundwork, plus `BreadcrumbList`
+    (Home > Category > Review).
+  - `src/pages/category/[slug].astro` (11 pages): `ItemList` of every tool
+    with its review URL.
+  - `src/pages/hub/[slug].astro` (7 pages): `CollectionPage` + `ItemList` of
+    recommended tools. Also fixed a live bug: meta description used
+    `hub.intro`, which does not exist in the data model, so all 7 hub pages
+    served empty meta descriptions; now uses `hub.description`.
+  - `src/pages/business/[slug].astro` (6 pages): `CollectionPage` +
+    `ItemList` of all curated tools.
+  - `public/og-image.png`: generated 1200x630 branded image.
+  - Verified via full production build (71 pages) and inspection of built
+    HTML: schema and og tags present in served HTML, e.g. on
+    `/review/pipedrive/`.
 - 2026-09-13 - Baseline crawl measurements recorded (table in Overview).
   Measurement script (run from repo root after `npm run build`):
 
