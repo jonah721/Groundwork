@@ -83,6 +83,25 @@ templating must remain single-source (see Decisions).
   - Verified via full production build (71 pages) and inspection of built
     HTML: schema and og tags present in served HTML, e.g. on
     `/review/pipedrive/`.
+- 2026-09-13 - Static-rendering refactor implemented on branch
+  `feat/static-rendering` (commits cc13f02, 1fa4909, c39fda8, 8bf6a50, plus
+  home/about commit): all six page types ported to native Astro templates;
+  Footer and DisclosureBanner also made static site-wide; HeaderNav and
+  QuizWidget remain React islands (interactive only). Before/after
+  crawler-visible word counts (static words in served HTML):
+
+  | Page type | Before (static / in-island) | After (static / in-island) |
+  |---|---|---|
+  | Review (pipedrive) | 6 / 856 | 835 / 13 |
+  | Category (crm) | 10 / 1026 | 999 / 13 |
+  | Hub (losing-leads) | - / - | 452 / 13 |
+  | Business (restaurant) | - / - | 583 / 13 |
+  | Home | 7 / 1535 | 1426 / 110 |
+  | About | - / - | 826 / 13 |
+
+  Site-wide across all 71 built pages: 57,110 static words vs 1,020 inside
+  islands (the 1,020 are HeaderNav labels + QuizWidget + Analytics, all
+  non-content). The residual 13 words per page = HeaderNav island.
 - 2026-09-13 - Baseline crawl measurements recorded (table in Overview).
   Measurement script (run from repo root after `npm run build`):
 
